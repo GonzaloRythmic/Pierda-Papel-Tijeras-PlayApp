@@ -142,7 +142,7 @@ app.post("/auth_room", (req, res) => {
   });
 });
 
-//Change onlineGuest flag
+//Change onlineGuest flag.
 app.post("/change_status",  (req, res) => {
   const {longRtdbtID} = req.body;
   const chatRoomRef = rtdbAdmin.ref("/Rooms/"+longRtdbtID)
