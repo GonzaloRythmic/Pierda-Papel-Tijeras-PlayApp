@@ -188,21 +188,30 @@ app.post('/set_move_rtdb', (req, res)=>{
   const {longRtdbtID} = req.body;
   const {move} = req.body; 
   const chatRoomRef = rtdbAdmin.ref("/Rooms/"+longRtdbtID+"/move")
-  console.log('Vengo del server', move)
-  console.log('Vengo del server', longRtdbtID)
-  chatRoomRef.push().set(move)
-  res.json('Todo okey')
+
+  // console.log('Vengo del server', move)
+  // console.log('Vengo del server', longRtdbtID)
+  
+  const newPush = chatRoomRef.push()
+  newPush.set(move)
+  const newPushId = newPush.key
+  res.json({newPushId: newPushId})
 })
+//Get moveId key
+app.post('"/get_moveId', (req, res)=>{
+  const {longRtdbtID} = req.body;
+  const {move} = req.body; 
+  const chatRoomRef = rtdbAdmin.ref("/Rooms/"+longRtdbtID+"/move")
+}),
 //Listen to a room at Real Time Data Base.
 app.post('/listen_room', (req, res)=> {
-  
   const {longRtdbtID} = req.body;
   const chatRoomRef = rtdbAdmin.ref("/Rooms/"+longRtdbtID)
   chatRoomRef.on('value', (snapshot) => {
     console.log("Esto es lo que hay en rtdb", snapshot.val());
     
     return res.json({
-      message: 'Datos de la rtdb',
+      message: 'Datos de la rtdb del room',
       data: snapshot.val()
     })
   }, (errorObject) => {

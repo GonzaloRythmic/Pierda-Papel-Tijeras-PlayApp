@@ -4,6 +4,7 @@ import {Router} from '@vaadin/router' ;
 class GamePage extends HTMLElement {
     connectedCallback() {
         this.render();
+
         var timeleft = 5;
         var downloadTimer = setInterval(function(){
             if(timeleft <= 0){
@@ -31,20 +32,39 @@ class GamePage extends HTMLElement {
                 if (type === "scissors") {
                     console.log('roomfirestoreID',roomFirestoreID)
                     state.setMoveAtState("scissors")
-                    state.setMoveAtFirestore("scissors",longrtdbId)
-                    state.setMoveAtRtdb("scissors", longrtdbId);
+
+                    // state.setMoveAtFirestore("scissors",longrtdbId)
+                    
+                    state.setMoveAtRtdb("scissors", longrtdbId).then((res)=>{
+                        return res.json().then((data)=>{
+                            cs.currentGame.moveIds.push(data.newPushId) 
+                            console.log("data del newPushId",cs.currentGame.moveIds)
+                        })
+                    });;
             
                 } else if (type === "rock") {
                     console.log('roomfirestoreID',roomFirestoreID)
                     state.setMoveAtState("rock")
-                    state.setMoveAtFirestore("rock",longrtdbId)
-                    state.setMoveAtRtdb("rock", longrtdbId);
+
+                    // state.setMoveAtFirestore("rock",longrtdbId)
+
+                    state.setMoveAtRtdb("rock", longrtdbId).then((res)=>{
+                        return res.json().then((data)=>{
+                            console.log("data del newPushId",data)
+                        })
+                    });
                
                 } else if (type === "paper") {
                     console.log('roomfirestoreID',roomFirestoreID)
                     state.setMoveAtState("paper")
-                    state.setMoveAtFirestore("paper",longrtdbId)
-                    state.setMoveAtRtdb("paper", longrtdbId);
+
+                    // state.setMoveAtFirestore("paper",longrtdbId)
+
+                    state.setMoveAtRtdb("paper", longrtdbId).then((res)=>{
+                        return res.json().then((data)=>{
+                            console.log("data del newPushId",data)
+                        })
+                    });;
                 }
             });
         

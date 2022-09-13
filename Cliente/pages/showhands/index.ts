@@ -4,32 +4,40 @@ import {Router} from '@vaadin/router';
 class ShowHandsPage extends HTMLElement {
     connectedCallback(){
         this.render();
+        
+        //Images
         const rock = require("url:../../images/piedra. jpg")
         const sisors = require("url:../../images/tijera. jpg")
         const paper = require("url:../../images/papel. jpg")
         const vs = require ("url:../../images/vs(3).png");
-        const computer = state.data.currentGame.player2_move;
-        const my = state.data.currentGame.player1_move;
+
+        const cs = state.getState();
+        const longrtdbId = cs.currentGame.longrtdbId
+
+        const user_1 = cs.currentGame.rtdbData.moveIds[0]
+        const user_2 = cs.currentGame.rtdbData.moveIds[1]
+
+        console.log("Jugada user_1", user_1,"Jugada user_2", user_2)
 
         //Verificamos jugadad de la máquina. 
         const imgElMachine = this.querySelector("img")as HTMLImageElement;
         
-        if (computer == "scissors") {
+        if (user_1 == "scissors") {
             imgElMachine.src = sisors;
-        } else if (computer == "rock") {
+        } else if (user_1 == "rock") {
             imgElMachine.src = rock;
-        } else if (computer == "paper") {
+        } else if (user_1 == "paper") {
             imgElMachine.src = paper;
         }
 
         //Verificamos jugada del usuario.
         const imgElYou = (this.querySelector(".img-you")) as HTMLImageElement;    
 
-        if (my == "scissors" ) {
+        if (user_2 == "scissors" ) {
             imgElYou.src = sisors;
-        } else if ( my == "rock") {
+        } else if ( user_2 == "rock") {
             imgElYou.src = rock;
-        } else if ( my == "paper") {
+        } else if ( user_2 == "paper") {
             imgElYou.src = paper;
         }
 
@@ -43,6 +51,7 @@ class ShowHandsPage extends HTMLElement {
         const paper = require("url:../../images/papel. jpg")
         const vs = require ("url:../../images/vs(3).png");
     
+
         this.innerHTML= `
             <div class = img_container-machine>
                 <img class = img-machine>
@@ -56,6 +65,7 @@ class ShowHandsPage extends HTMLElement {
                 <img class = img-you> 
             </div>
         `
+
         const style = document.createElement("style");
         style.innerHTML =`
             .img_container-machine{

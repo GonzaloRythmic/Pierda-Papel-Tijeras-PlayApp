@@ -18,7 +18,7 @@ const state = {
       longrtdbId: "",
       firestoreId: "",
       roomFirestoreID: "",
-      move:[],
+      moveIds:[],
       rtdbData: {}
     },
     history: {
@@ -58,10 +58,6 @@ const state = {
     const currentState = this.getState();
     currentState.currentGame.roomFirestoreID = id;
     this.setState(currentState);
-  },
-  //Look for room at Firestore by longrtdbId
-  lookForRoomFirestoreID(longrtdbId){ 
-    
   },
 //Set user  short RealTimeDataBaseID
   setRtdbId(rtdbId) {
@@ -318,7 +314,24 @@ const state = {
     }
   },
 //Determinates who wins
-  whoWins(player1: Play, player2: Play) {
+  whoWins(longRtdbtID,) {
+    const cs = this.getState()
+    if (cs.currentGame.longrtdbId){
+      const chatRoomRef = ref(rtdb, 'Rooms/' + cs.currentGame.longrtdbId);
+      onValue(chatRoomRef, (snapshot) => {
+        const data = snapshot.val();
+
+        cs.currentGame.move.player1 = data.move[0] 
+        cs.currentGame.move.player2 = data.move[1]
+
+      })
+    }
+
+    const player1 = cs.currentGame.move.player1
+    const player2 = cs.currentGame.move.player2
+
+    console.log("Soy el player1 en state", player1, "Soy el player 2", player2)
+
     const tieS: boolean = player1 == "scissors" && player2 == "scissors";
     const tieR: boolean = player1 == "rock" && player2 == "rock";
     const tieP: boolean = player1 == "paper" && player2 == "paper";
@@ -346,7 +359,24 @@ const state = {
       return "loss";
     }
   },
-
+  //Listen to a Room
+  listenToRoom (longRtdbtID) {
+    const cs = this.getState();
+    if (cs.currentGame.longrtdbId){
+      return fetch (API_BASE_URL + '/listen_room', {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          longRtdbtID: longRtdbtID
+        })
+      })
+    } else {
+      console.log("id no encontrado")
+    }
+  }
 };
 
 export { state };

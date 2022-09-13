@@ -10,11 +10,12 @@ const resultImages = {
 class ResultPage extends HTMLElement {
   connectedCallback(){
     this.render();
-    const currentState = state.getState();
-    const currentGame = currentState.currentGame;
-    const myPlay = currentGame.myPlay;
-    const computerPlay = currentGame.computerPlay;
-    const whoWins = state.whoWins(myPlay, computerPlay);
+    
+    // const myPlay = currentGame.myPlay;
+    // const computerPlay = currentGame.computerPlay;
+    const cs = state.getState()
+    const longRtdbtID = cs.currentGame.longrtdbId;
+    const whoWins = state.whoWins(longRtdbtID);
   
     let background;
     let imagen;
