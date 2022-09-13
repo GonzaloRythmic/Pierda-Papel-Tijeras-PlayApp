@@ -47,7 +47,7 @@ class Login extends HTMLElement {
                 return res.json()
               }).then((data)=>{
                 console.log('soy el roomFirestoreID', data.newRoomID)               
-                state.setFirestoreRoomId(data.newRoomID)                 
+                // state.setFirestoreRoomId(data.newRoomID)                 
                 Router.go("/id_code")
               })
             });
